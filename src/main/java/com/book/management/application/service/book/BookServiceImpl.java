@@ -1,9 +1,11 @@
 package com.book.management.application.service.book;
 
+import com.book.management.application.exception.ItemNotFoundException;
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.application.model.BookModel;
 import com.book.management.domain.book.BookEntity;
 import com.book.management.infrastructure.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,19 +31,30 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookModel updateBook(BookModel bookModel) {
+        repository.findById(bookModel.getId())
+                .orElseThrow(() -> new ItemNotFoundException("Book with given id=" + bookModel.getId() + " does not exist!"));
+
         BookEntity updated = repository.save(mapper.modelToEntity(bookModel));
         return mapper.entityToModel(updated);
     }
 
     @Override
+    @Transactional
     public void deleteBook(Long bookId) {
+        repository.findById(bookId)
+                .orElseThrow(() -> new ItemNotFoundException("Book with given id=" + bookId + " does not exist!"));
+
         repository.deleteById(bookId);
     }
 
     @Override
     public BookModel getBook(Long bookId) {
-        return mapper.entityToModel(repository.findById(bookId).orElse(null));
+        BookEntity current = repository.findById(bookId)
+                .orElseThrow(() -> new ItemNotFoundException("Book with given id=" + bookId + " does not exist!"));
+
+        return mapper.entityToModel(current);
     }
 
     @Override
