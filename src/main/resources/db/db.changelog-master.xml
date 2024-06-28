@@ -1,0 +1,23 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="src/main/resources/db/db.changelog-master.xml">
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="nameLength" value="256" />
+    <property name="externalIdLength" value="256" />
+
+<!--    <include file="db.changelog-1.0.xml" relativeToChangelogFile="true" />-->
+
+<!--    <changeSet id="release-1.0-tag" author="Abdurashid Vakhobov">-->
+<!--        <tagDatabase tag="release-1.0"/>-->
+<!--    </changeSet>-->
+
+<!--    <include file="db.changelog-1.0-sample-data.xml" relativeToChangelogFile="true" />-->
+
+<!--    <changeSet id="release-1.0-sample-data-tag" author="Abdurashid Vakhobov">-->
+<!--        <tagDatabase tag="release-1.0-sample-data"/>-->
+<!--    </changeSet>-->
+</databaseChangeLog>
