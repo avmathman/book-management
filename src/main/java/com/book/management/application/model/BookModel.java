@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
+/**
+ * The model of the book.
+ */
 @Getter
 @Setter
 public class BookModel {

@@ -1,7 +1,7 @@
 package com.book.management.presentation.controller;
 
 import com.book.management.application.service.book.BookService;
-import com.book.management.presentation.common.UserManagementApiLocations;
+import com.book.management.presentation.common.BookManagementApiLocations;
 import com.book.management.presentation.dto.book.BookCreateDto;
 import com.book.management.presentation.dto.book.BookDto;
 import com.book.management.presentation.mapper.BookCreateMapper;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(
-        path = "${management.api.prefix:}" + UserManagementApiLocations.BOOK,
+        path = "${management.api.prefix:}" + BookManagementApiLocations.BOOK,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 public class BookRestController {
@@ -50,7 +50,7 @@ public class BookRestController {
      * REST API method to create a new book.
      *
      * @param bookCreateDto - The book {@link BookCreateDto} to create.
-     * @return The created user instance.
+     * @return The created book instance.
      */
     @RequestMapping(
             path = "",
@@ -58,7 +58,7 @@ public class BookRestController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BookDto> createUser(
+    public ResponseEntity<BookDto> createBook(
             @RequestBody BookCreateDto bookCreateDto
     ) {
         final BookDto bookDto = bookReadMapper.modelToDto(bookService.createBook(bookCreateMapper.dtoToModel(bookCreateDto)));
@@ -69,7 +69,7 @@ public class BookRestController {
      * REST API method to modify a book.
      *
      * @param bookDto - The book {@link BookDto} to be modified.
-     * @return The modified user instance.
+     * @return The modified book instance.
      */
     @RequestMapping(
             path = "",
@@ -77,7 +77,7 @@ public class BookRestController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookDto> updateUser(
+    public ResponseEntity<BookDto> updateBook(
             @RequestBody BookDto bookDto
     ) {
         final BookDto updated = this.bookReadMapper.modelToDto(this.bookService.updateBook(this.bookReadMapper.dtoToModel(bookDto)));
@@ -85,16 +85,16 @@ public class BookRestController {
     }
 
     /**
-     * REST API method to delete the specified user.
+     * REST API method to delete the specified book.
      *
-     * @param id The ID of the user to delete.
+     * @param id The ID of the book to delete.
      */
     @RequestMapping(
             path = "/{id}",
             method = RequestMethod.DELETE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteUser(
+    public ResponseEntity<Void> deleteBook(
             @PathVariable Long id
     ) {
         this.bookService.deleteBook(id);
@@ -102,14 +102,14 @@ public class BookRestController {
     }
 
     /**
-     * REST API method to retrieve user by its ID.
+     * REST API method to retrieve book by its ID.
      *
-     * @param id - The user ID.
-     * @return the user instance.
+     * @param id - The book ID.
+     * @return the book instance.
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<BookDto> getUser(
+    public ResponseEntity<BookDto> getBook(
             @PathVariable Long id
     ) {
         final BookDto bookDto = this.bookReadMapper.modelToDto(bookService.getBook(id));
@@ -117,17 +117,17 @@ public class BookRestController {
     }
 
     /**
-     * REST API method to retrieve list of users.
+     * REST API method to retrieve list of books.
      *
-     * @return The list of user instances.
+     * @return The list of book instances.
      */
     @RequestMapping(
             path = "/all",
             method = RequestMethod.GET
     )
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<BookDto>> getAllUsers() {
-        List<BookDto> users = this.bookReadMapper.modelsToDtos(this.bookService.getAllBooks());
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<List<BookDto>> getAllBooks() {
+        List<BookDto> books = this.bookReadMapper.modelsToDtos(this.bookService.getAllBooks());
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 }
