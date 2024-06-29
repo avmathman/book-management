@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  # Book
+  book:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/book-management
+      - SPRING_DATASOURCE_USERNAME=sampler
+      - SPRING_DATASOURCE_PASSWORD=sampler
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - postgres
+    networks:
+      - my-network
+  # PostgreSQL.
+  postgres:
+    image: postgres:13.3-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment: # https://github.com/docker-library/docs/tree/master/postgres#environment-variables
+      - POSTGRES_USER=sampler
+      - POSTGRES_PASSWORD=sampler
+      - POSTGRES_DB=book-management
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+networks:
+  my-network:
+volumes:
+  postgres-volume:
+    external: false
