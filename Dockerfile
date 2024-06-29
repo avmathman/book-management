@@ -3,7 +3,7 @@ FROM gradle:8.8.0-jdk17-alpine AS build
 WORKDIR /usr/app
 COPY build.gradle .
 COPY src ./src
-RUN gradle bootJar
+RUN gradle build
 
 # Package
 FROM eclipse-temurin:17-jdk-alpine
