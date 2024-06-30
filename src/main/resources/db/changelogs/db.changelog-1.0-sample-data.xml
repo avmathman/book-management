@@ -1,0 +1,26 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="src/main/resources/db/changelogs/db.changelog-1.0-sample-data.xml">
+    <changeSet id="av/sample-data-books" author="Abdurashid Vakhobov" context="sample-data">
+        <insert tableName="books">
+            <column name="title" value="Crime and Punishment" />
+            <column name="author" value="F. Dostoevsky" />
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="Anna Karenina" />
+            <column name="author" value="L. Tolstoy" />
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="The Brothers Karamazov" />
+            <column name="author" value="F. Dostoevsky" />
+        </insert>
+        <insert tableName="books">
+            <column name="title" value="Dead Souls" />
+            <column name="author" value="N. Gogol" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

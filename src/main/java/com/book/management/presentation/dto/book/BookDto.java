@@ -31,9 +31,4 @@ public class BookDto {
      * The book description.
      */
     private String description;
-
-    /**
-     * The date when the book entry was created.
-     */
-    private Timestamp createdAt;
 }

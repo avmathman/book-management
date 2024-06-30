@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd"
+        logicalFilePath="src/main/resources/db/changelogs/db.changelog-1.0.xml">
+    <changeSet id="create-books-table" author="Abdurashid Vakhobov" context="schema">
+        <createTable tableName="books">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_users" nullable="false" />
+            </column>
+            <column name="title" type="varchar(${nameLength})" />
+            <column name="author" type="varchar(${nameLength})" />
+            <column name="description" type="varchar(${nameLength})" />
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="users" />
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

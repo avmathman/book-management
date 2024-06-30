@@ -45,11 +45,4 @@ public class BookEntity {
     @Column(name = "description")
     @NotNull
     private String description;
-
-    /**
-     * The date when the book entry was created.
-     */
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private Timestamp createdAt;
 }

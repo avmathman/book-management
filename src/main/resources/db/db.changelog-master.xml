@@ -9,15 +9,15 @@
     <property name="nameLength" value="256" />
     <property name="externalIdLength" value="256" />
 
-<!--    <include file="db.changelog-1.0.xml" relativeToChangelogFile="true" />-->
+    <include file="changelogs/db.changelog-1.0.xml" relativeToChangelogFile="true" />
 
-<!--    <changeSet id="release-1.0-tag" author="Abdurashid Vakhobov">-->
-<!--        <tagDatabase tag="release-1.0"/>-->
-<!--    </changeSet>-->
+    <changeSet id="release-1.0-tag" author="Abdurashid Vakhobov">
+        <tagDatabase tag="release-1.0"/>
+    </changeSet>
 
-<!--    <include file="db.changelog-1.0-sample-data.xml" relativeToChangelogFile="true" />-->
+    <include file="changelogs/db.changelog-1.0-sample-data.xml" relativeToChangelogFile="true" />
 
-<!--    <changeSet id="release-1.0-sample-data-tag" author="Abdurashid Vakhobov">-->
-<!--        <tagDatabase tag="release-1.0-sample-data"/>-->
-<!--    </changeSet>-->
+    <changeSet id="release-1.0-sample-data-tag" author="Abdurashid Vakhobov">
+        <tagDatabase tag="release-1.0-sample-data"/>
+    </changeSet>
 </databaseChangeLog>

@@ -18,6 +18,5 @@ public interface BookCreateMapper {
      * @return The model{@link BookModel} object.
      */
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
     BookModel dtoToModel(BookCreateDto bookCreateDto);
 }
