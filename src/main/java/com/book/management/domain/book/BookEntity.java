@@ -2,9 +2,10 @@ package com.book.management.domain.book;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -15,6 +16,8 @@ import java.sql.Timestamp;
 @Table(name = "books")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookEntity {
 
     /**

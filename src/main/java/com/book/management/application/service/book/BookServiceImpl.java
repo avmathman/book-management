@@ -33,20 +33,21 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookModel updateBook(BookModel bookModel) {
-        repository.findById(bookModel.getId())
+        BookEntity updated = repository
+                .update(mapper.modelToEntity(bookModel))
                 .orElseThrow(() -> new ItemNotFoundException("Book with given id=" + bookModel.getId() + " does not exist!"));
 
-        BookEntity updated = repository.save(mapper.modelToEntity(bookModel));
         return mapper.entityToModel(updated);
     }
 
     @Override
     @Transactional
     public void deleteBook(Long bookId) {
-        repository.findById(bookId)
-                .orElseThrow(() -> new ItemNotFoundException("Book with given id=" + bookId + " does not exist!"));
+        int result = repository.deleteById(bookId);
 
-        repository.deleteById(bookId);
+        if (result == 0) {
+            throw new ItemNotFoundException("Book with given id=" + bookId + " does not exist!");
+        }
     }
 
     @Override
