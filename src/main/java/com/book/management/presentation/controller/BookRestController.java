@@ -8,6 +8,10 @@ import com.book.management.presentation.dto.book.BookDto;
 import com.book.management.presentation.dto.book.FilteredBookDto;
 import com.book.management.presentation.mapper.BookCreateMapper;
 import com.book.management.presentation.mapper.BookReadMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,12 +19,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Books REST API controller with representing methods.
  */
+@Tag(name = "Book", description = "The Book API")
 @RestController
 @RequestMapping(
         path = "${management.api.prefix:}" + BookManagementApiLocations.BOOK,
@@ -56,6 +60,12 @@ public class BookRestController {
      * @param bookCreateDto - The book {@link BookCreateDto} to create.
      * @return The created book instance.
      */
+    @Operation(
+            summary = "Add new book",
+            description = "Allows to create new book.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "successfully created")
+    })
     @RequestMapping(
             path = "",
             method = RequestMethod.POST,
@@ -75,6 +85,13 @@ public class BookRestController {
      * @param bookDto - The book {@link BookDto} to be modified.
      * @return The modified book instance.
      */
+    @Operation(
+            summary = "Modify existing book",
+            description = "Allows to modify existing book.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Book with given ID was not found")
+    })
     @RequestMapping(
             path = "",
             method = RequestMethod.PUT,
@@ -93,6 +110,13 @@ public class BookRestController {
      *
      * @param id The ID of the book to delete.
      */
+    @Operation(
+            summary = "Delete existing book",
+            description = "Allows to delete/remove existing book by ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "successfully deleted"),
+            @ApiResponse(responseCode = "404", description = "Book with given ID was not found")
+    })
     @RequestMapping(
             path = "/{id}",
             method = RequestMethod.DELETE
@@ -111,6 +135,13 @@ public class BookRestController {
      * @param id - The book ID.
      * @return the book instance.
      */
+    @Operation(
+            summary = "Retrieve a book by ID",
+            description = "Allows to retrieve existing book by ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successfully found"),
+            @ApiResponse(responseCode = "404", description = "Book with given ID was not found")
+    })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookDto> getBook(
@@ -125,6 +156,12 @@ public class BookRestController {
      *
      * @return The list of book instances.
      */
+    @Operation(
+            summary = "Retrieve all existing books",
+            description = "Allows to retrieve all existing books.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successfully retrieved existing books."),
+    })
     @RequestMapping(
             path = "/all",
             method = RequestMethod.GET
@@ -141,6 +178,12 @@ public class BookRestController {
      * @param author - The book's author name to find from database.
      * @return The list of books{@link List<FilteredBookDto>} instances.
      */
+    @Operation(
+            summary = "Filter book by author name",
+            description = "Filters book by author name. Then, sorts by count of book for each author.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successfully found")
+    })
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<FilteredBookDto>> filterByAuthor(
