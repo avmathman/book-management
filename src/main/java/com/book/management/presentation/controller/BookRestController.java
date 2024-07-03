@@ -1,10 +1,10 @@
 package com.book.management.presentation.controller;
 
-import com.book.management.application.model.BookModel;
 import com.book.management.application.service.book.BookService;
 import com.book.management.presentation.common.BookManagementApiLocations;
 import com.book.management.presentation.dto.book.BookCreateDto;
 import com.book.management.presentation.dto.book.BookDto;
+import com.book.management.presentation.dto.book.FilteredBookDto;
 import com.book.management.presentation.mapper.BookCreateMapper;
 import com.book.management.presentation.mapper.BookReadMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Books REST API controller with representing methods.
@@ -136,14 +137,18 @@ public class BookRestController {
      * REST API method to retrieve list of books by author name.
      *
      * @param author - The book's author name to find from database.
-     * @return The list of books{@link List<BookDto>} instances.
+     * @return The list of books{@link List<FilteredBookDto>} instances.
      */
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<BookModel>> filterByAuthor(
+    public ResponseEntity<List<FilteredBookDto>> filterByAuthor(
             @RequestParam String author
     ) {
-        final List<BookModel> bookModels = bookService.filterByAuthor(author);
-        return new ResponseEntity<>(bookModels, HttpStatus.OK);
+        final List<FilteredBookDto> filteredBookDtos = bookService.filterByAuthor(author)
+                .stream()
+                .map(FilteredBookDto::convertFrom)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(filteredBookDtos, HttpStatus.OK);
     }
 }
