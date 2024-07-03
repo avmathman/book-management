@@ -25,7 +25,7 @@ public class BookRepository implements CustomRepository<BookEntity> {
     private static final String UPDATE_SQL = "update books set title = ?, author = ?, description = ? where id = ?";
     private static final String DELETE_BY_ID_SQL = "delete from books where id = ?";
     private static final String DELETE_All_SQL = "delete from books";
-    private static final String FILTER_BY_TITLE_SQL = "SELECT * FROM books WHERE title LIKE ?";
+    private static final String FILTER_BY_TITLE_SQL = "SELECT title, author, description FROM books WHERE LOWER(title) LIKE ?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -106,7 +106,7 @@ public class BookRepository implements CustomRepository<BookEntity> {
     }
 
     public List<BookEntity> filterByTitle(String title) {
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(FILTER_BY_TITLE_SQL, "%" + title + "%");
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(FILTER_BY_TITLE_SQL, "%" + title.toLowerCase() + "%");
 
         return list.stream()
                 .map(item -> new BookEntity(
