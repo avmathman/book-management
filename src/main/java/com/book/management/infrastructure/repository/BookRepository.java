@@ -106,7 +106,7 @@ public class BookRepository implements CustomRepository<BookEntity> {
     }
 
     public List<BookEntity> filterByAuthor(String author) {
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(FILTER_BY_AUTHOR_SQL, new String[] { "%" + author + "%" });
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(FILTER_BY_AUTHOR_SQL, "%" + author + "%");
 
         return list.stream()
                 .map(item -> new BookEntity(
