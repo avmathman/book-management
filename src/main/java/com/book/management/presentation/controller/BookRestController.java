@@ -1,5 +1,6 @@
 package com.book.management.presentation.controller;
 
+import com.book.management.application.model.BookModel;
 import com.book.management.application.service.book.BookService;
 import com.book.management.presentation.common.BookManagementApiLocations;
 import com.book.management.presentation.dto.book.BookCreateDto;
@@ -129,5 +130,20 @@ public class BookRestController {
     public ResponseEntity<List<BookDto>> getAllBooks() {
         List<BookDto> books = this.bookReadMapper.modelsToDtos(this.bookService.getAllBooks());
         return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+    /**
+     * REST API method to retrieve list of books by author name.
+     *
+     * @param author - The book's author name to find from database.
+     * @return The list of books{@link List<BookDto>} instances.
+     */
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<BookModel>> filterByAuthor(
+            @RequestParam String author
+    ) {
+        final List<BookModel> bookModels = bookService.filterByAuthor(author);
+        return new ResponseEntity<>(bookModels, HttpStatus.OK);
     }
 }

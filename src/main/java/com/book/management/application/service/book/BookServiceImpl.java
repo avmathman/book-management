@@ -68,4 +68,9 @@ public class BookServiceImpl implements BookService {
     public List<BookModel> getAllBooks() {
         return mapper.entitiesToModels(repository.findAll());
     }
+
+    @Override
+    public List<BookModel> filterByAuthor(String author) {
+        return mapper.entitiesToModels(repository.filterByAuthor(author));
+    }
 }

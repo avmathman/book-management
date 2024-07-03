@@ -3,7 +3,9 @@ package com.book.management.infrastructure.repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.book.management.domain.book.BookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class BookRepository implements CustomRepository<BookEntity> {
     private static final String UPDATE_SQL = "update books set title = ?, author = ?, description = ? where id = ?";
     private static final String DELETE_BY_ID_SQL = "delete from books where id = ?";
     private static final String DELETE_All_SQL = "delete from books";
+    private static final String FILTER_BY_AUTHOR_SQL = "SELECT * FROM books WHERE author LIKE ?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -86,7 +89,7 @@ public class BookRepository implements CustomRepository<BookEntity> {
     public Optional<BookEntity> findById(long id) {
         try {
             return jdbcTemplate.queryForObject(
-                    "select * from books where id = ?",
+                    "select id, title, author, description from books where id = ?",
                     new Object[]{id},
                     (rs, rowNum) ->
                             Optional.of(new BookEntity(
@@ -100,5 +103,18 @@ public class BookRepository implements CustomRepository<BookEntity> {
             return Optional.empty();
         }
 
+    }
+
+    public List<BookEntity> filterByAuthor(String author) {
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(FILTER_BY_AUTHOR_SQL, new String[] { "%" + author + "%" });
+
+        return list.stream()
+                .map(item -> new BookEntity(
+                    Long.parseLong(item.get("id").toString()),
+                    item.get("title").toString(),
+                    item.get("author").toString(),
+                    item.get("description").toString())
+                )
+                .collect(Collectors.toList());
     }
 }
