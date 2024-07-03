@@ -7,7 +7,7 @@ buildscript {
 		liquibaseVersion = '4.24.0'
 		openAPIVersion = '2.0.2'
 		hibernateValidatorVersion = '8.0.0.Final'
-		h2Version = '2.2.2.224'
+		h2Version = '2.2.224'
 	}
 	repositories {
 		mavenCentral()
