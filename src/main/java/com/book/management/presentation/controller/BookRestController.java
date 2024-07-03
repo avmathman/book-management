@@ -1,5 +1,6 @@
 package com.book.management.presentation.controller;
 
+import com.book.management.application.model.BookModel;
 import com.book.management.application.service.book.BookService;
 import com.book.management.presentation.common.BookManagementApiLocations;
 import com.book.management.presentation.dto.book.BookCreateDto;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -146,7 +148,11 @@ public class BookRestController {
     ) {
         final List<FilteredBookDto> filteredBookDtos = bookService.filterByAuthor(author)
                 .stream()
-                .map(FilteredBookDto::convertFrom)
+                .collect(Collectors.groupingBy(BookModel::getAuthor, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .map(entry -> new FilteredBookDto(entry.getKey(), entry.getValue()))
+                .sorted((f1, f2) -> Long.compare(f2.getCount(), f1.getCount()))
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(filteredBookDtos, HttpStatus.OK);

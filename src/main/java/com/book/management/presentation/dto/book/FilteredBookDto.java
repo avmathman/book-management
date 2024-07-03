@@ -1,6 +1,5 @@
 package com.book.management.presentation.dto.book;
 
-import com.book.management.application.model.BookModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,16 +13,12 @@ import lombok.Setter;
 public class FilteredBookDto {
 
     /**
-     * The book identifier.
-     */
-    private Long id;
-
-    /**
      * The book author.
      */
     private String author;
 
-    public static FilteredBookDto convertFrom(BookModel model) {
-        return new FilteredBookDto(model.getId(), model.getAuthor());
-    }
+    /**
+     * The book identifier.
+     */
+    private Long count;
 }
