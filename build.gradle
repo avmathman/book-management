@@ -31,8 +31,31 @@ java {
 	}
 }
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+
+	integrationTestRuntime.extendsFrom testRuntimeOnly
+	integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+	integrationTestImplementation.extendsFrom testImplementation
+}
+
 repositories {
 	mavenCentral()
+}
+
+sourceSets {
+	integrationTest {
+		java {
+			srcDir file('src/integration-test/java')
+
+			compileClasspath += main.output + test.output + main.compileClasspath + test.compileClasspath
+			runtimeClasspath += main.output + test.output + main.runtimeClasspath + test.runtimeClasspath
+		}
+
+		resources.srcDir file('src/integration-test/resources')
+	}
 }
 
 dependencies {
@@ -64,4 +87,14 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.register('integrationTest', Test) {
+	useJUnitPlatform()
+
+	description = "Runs the integration tests"
+	group = "verification"
+	testClassesDirs = sourceSets.integrationTest.output.classesDirs
+	classpath = sourceSets.integrationTest.runtimeClasspath
+	maxHeapSize = '1024m'
 }
