@@ -64,6 +64,6 @@ public interface BookService {
      * @param author - The book's author name to find from database.
      * @return The list of books{@link List<BookModel>} instances.
      */
-    List<BookModel> filterByAuthor(String author);
+    List<BookModel> filterByTitle(String author);
 
 }

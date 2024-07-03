@@ -15,7 +15,7 @@ public class FilteredBookDto {
     /**
      * The book author.
      */
-    private String author;
+    private String title;
 
     /**
      * The book identifier.

@@ -70,7 +70,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookModel> filterByAuthor(String author) {
-        return mapper.entitiesToModels(repository.filterByAuthor(author));
+    public List<BookModel> filterByTitle(String author) {
+        return mapper.entitiesToModels(repository.filterByTitle(author));
     }
 }

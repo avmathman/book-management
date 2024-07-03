@@ -67,9 +67,9 @@ public class FilteredBookApiTest {
 
         assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(2);
-        assertEquals(result.get(0).getAuthor(), firstAuthorName);
+        assertEquals(result.get(0).getTitle(), firstAuthorName);
         assertEquals(result.get(0).getCount(), 3);
-        assertEquals(result.get(1).getAuthor(), secondAuthorName);
+        assertEquals(result.get(1).getTitle(), secondAuthorName);
         assertEquals(result.get(1).getCount(), 2);
     }
 
