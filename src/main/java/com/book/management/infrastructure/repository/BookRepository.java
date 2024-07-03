@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.book.management.domain.book.BookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -21,6 +22,7 @@ public class BookRepository implements CustomRepository<BookEntity> {
     private static final String INSERT_SQL = "insert into books (title, author, description) values (?,?,?)";
     private static final String UPDATE_SQL = "update books set title = ?, author = ?, description = ? where id = ?";
     private static final String DELETE_BY_ID_SQL = "delete from books where id = ?";
+    private static final String DELETE_All_SQL = "delete from books";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -38,9 +40,9 @@ public class BookRepository implements CustomRepository<BookEntity> {
 
         return new BookEntity(
                 (Long) keyHolder.getKeys().get("id"),
-                keyHolder.getKeys().get("title").toString(),
-                keyHolder.getKeys().get("author").toString(),
-                keyHolder.getKeys().get("description").toString());
+                book.getTitle(),
+                book.getAuthor(),
+                book.getDescription());
 
     }
 
@@ -62,6 +64,11 @@ public class BookRepository implements CustomRepository<BookEntity> {
     }
 
     @Override
+    public int deleteAllBooks() {
+        return jdbcTemplate.update(DELETE_All_SQL);
+    }
+
+    @Override
     public List<BookEntity> findAll() {
         return jdbcTemplate.query(
                 "select * from books",
@@ -77,16 +84,21 @@ public class BookRepository implements CustomRepository<BookEntity> {
 
     @Override
     public Optional<BookEntity> findById(long id) {
-        return jdbcTemplate.queryForObject(
-                "select * from books where id = ?",
-                new Object[]{id},
-                (rs, rowNum) ->
-                        Optional.of(new BookEntity(
-                                rs.getLong("id"),
-                                rs.getString("title"),
-                                rs.getString("author"),
-                                rs.getString("description")
-                        ))
-        );
+        try {
+            return jdbcTemplate.queryForObject(
+                    "select * from books where id = ?",
+                    new Object[]{id},
+                    (rs, rowNum) ->
+                            Optional.of(new BookEntity(
+                                    rs.getLong("id"),
+                                    rs.getString("title"),
+                                    rs.getString("author"),
+                                    rs.getString("description")
+                            ))
+            );
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
+
     }
 }

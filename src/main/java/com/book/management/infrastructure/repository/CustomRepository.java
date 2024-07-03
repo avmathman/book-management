@@ -12,6 +12,8 @@ public interface CustomRepository<T> {
 
     int deleteById(Long id);
 
+    int deleteAllBooks();
+
     List<T> findAll();
 
     Optional<T> findById(long id);

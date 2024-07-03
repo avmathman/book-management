@@ -35,6 +35,13 @@ public interface BookService {
     void deleteBook(Long bookId);
 
     /**
+     * Deletes all books.
+     *
+     * @throws ItemNotFoundException if book with the given id does not exist in database.
+     */
+    public void deleteAllBooks();
+
+    /**
      * Returns book by its ID if it exists.
      *
      * @param bookId - ID of the book to get.

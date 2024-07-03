@@ -51,6 +51,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
+    public void deleteAllBooks() {
+        repository.deleteAllBooks();
+    }
+
+    @Override
     public BookModel getBook(Long bookId) {
         BookEntity current = repository.findById(bookId)
                 .orElseThrow(() -> new ItemNotFoundException("Book with given id=" + bookId + " does not exist!"));
