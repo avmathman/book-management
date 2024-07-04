@@ -22,6 +22,7 @@ Java 11
 Gradle 8.8
 Spring 3.2.7
 ```
+Database name is **book-management**
 
 ### Installing
 
