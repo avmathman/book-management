@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ManagementIntegrationTest
 public class FilteredBookApiTest {
 
-    private final String BASE_API_URL = "/api" + BookManagementApiLocations.BOOK;
+    private final String BASE_API_URL = "/api" + BookManagementApiLocations.BOOK + "/filter";
 
     @Autowired
     private BookServiceImpl service;
@@ -43,19 +43,19 @@ public class FilteredBookApiTest {
 
         //Assign
         String filterText = "o";
-        String firstAuthorName = "Micheal Douglaa";
+        String firstAuthorName = "Ernest Hemingway";
         String secondAuthorName = "Johny Cash";
 
-        service.createBook(createBookModel("Title", firstAuthorName, "Description"));
-        service.createBook(createBookModel("Title", secondAuthorName, "Description"));
-        service.createBook(createBookModel("Title", firstAuthorName, "Description"));
-        service.createBook(createBookModel("Title", secondAuthorName, "Description"));
-        service.createBook(createBookModel("Title", firstAuthorName, "Description"));
+        service.createBook(createBookModel("The Old Man and the Sea", firstAuthorName, "Description"));
+        service.createBook(createBookModel("Some good men", secondAuthorName, "Description"));
+        service.createBook(createBookModel("A Farewell to arms", firstAuthorName, "Description"));
+        service.createBook(createBookModel("The road to success", secondAuthorName, "Description"));
+        service.createBook(createBookModel("The Sun Also Rises", firstAuthorName, "Description"));
 
         //Act
         String response = this.mockMvc
                 .perform(
-                        get(BASE_API_URL + "?author={id}", filterText)
+                        get(BASE_API_URL + "?title={id}", filterText)
                 )
                 .andExpect(status().isOk())
                 .andReturn()

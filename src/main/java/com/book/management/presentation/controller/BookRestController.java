@@ -175,7 +175,7 @@ public class BookRestController {
     /**
      * REST API method to retrieve list of books by title name.
      *
-     * @param author - The book's title name to find from database.
+     * @param title - The book's title name to find from database.
      * @return The list of books{@link List<FilteredBookDto>} instances.
      */
     @Operation(
@@ -184,12 +184,12 @@ public class BookRestController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successfully found")
     })
-    @GetMapping("")
+    @GetMapping("/filter")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<FilteredBookDto>> filterByTitle(
-            @RequestParam String author
+            @RequestParam String title
     ) {
-        final List<FilteredBookDto> filteredBookDtos = bookService.filterByTitle(author)
+        final List<FilteredBookDto> filteredBookDtos = bookService.filterByTitle(title)
                 .stream()
                 .collect(Collectors.groupingBy(BookModel::getAuthor, Collectors.counting()))
                 .entrySet()
