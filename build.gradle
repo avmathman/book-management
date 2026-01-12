@@ -1,3 +1,5 @@
+import de.qualersoft.jmeter.gradleplugin.task.JMeterRunTask
+
 buildscript {
 	ext {
 		springBootVersion = '3.2.7'
@@ -21,6 +23,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.7'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'de.qualersoft.jmeter' version '2.4.0'
 }
 
 group = 'com.book'
@@ -47,6 +50,13 @@ repositories {
 	mavenCentral()
 }
 
+jmeter {
+	// basic config
+	jmxRootDir = file('src/test/jmeter')
+	resultDir = file("$buildDir/jmeter/results")
+	reportDir = file("$buildDir/jmeter/reports")
+}
+
 sourceSets {
 	integrationTest {
 		java {
@@ -60,32 +70,35 @@ sourceSets {
 
 dependencies {
 
-	// Spring dependencies:
+	// Spring dependencies
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
 	implementation("org.liquibase:liquibase-core:$liquibaseVersion")
-	implementation "org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion"
+	implementation("org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion")
 
-
-	// Persistence dependencies:
+	// Persistence
 	runtimeOnly("org.postgresql:postgresql:$postgresDriverVersion")
 
-	// Annotation processors:
+	// Annotation processors
 	implementation("org.mapstruct:mapstruct:$mapStructVersion")
 	compileOnly("org.mapstruct:mapstruct-processor:$mapStructVersion")
-	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	compileOnly("org.projectlombok:lombok:$lombokVersion")
 	annotationProcessor(
 			"org.projectlombok:lombok:$lombokVersion",
 			"org.mapstruct:mapstruct-processor:$mapStructVersion"
 	)
 
-	// Tools, utilities and annotation processor dependencies
+	// Tools
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openAPIVersion")
 
-	// Test dependencies
+	// Tests
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly("com.h2database:h2:$h2Version")
+}
+
+tasks.register('runJMeter', JMeterRunTask) {
+	jmxFile.set("${projectDir}/src/test/jmeter/load_test.jmx")
 }
 
 tasks.named('test') {
