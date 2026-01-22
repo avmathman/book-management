@@ -6,6 +6,7 @@ import com.book.management.application.model.BookModel;
 import com.book.management.domain.book.BookEntity;
 import com.book.management.infrastructure.repository.BookRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +66,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Cacheable("books")
     public List<BookModel> getAllBooks() {
         return mapper.entitiesToModels(repository.findAll());
     }

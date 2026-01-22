@@ -63,6 +63,7 @@ dependencies {
 	// Spring dependencies:
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
 	implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+	implementation("org.springframework.boot:spring-boot-starter-cache:$springBootVersion")
 	implementation("org.liquibase:liquibase-core:$liquibaseVersion")
 	implementation "org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion"
 
@@ -81,6 +82,7 @@ dependencies {
 
 	// Tools, utilities and annotation processor dependencies
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openAPIVersion")
+	implementation("com.github.ben-manes.caffeine:caffeine")
 
 	// Test dependencies
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
