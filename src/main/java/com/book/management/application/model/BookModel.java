@@ -3,14 +3,16 @@ package com.book.management.application.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 
 /**
  * The model of the book.
  */
 @Getter
 @Setter
-public class BookModel {
+public class BookModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * The book identifier.

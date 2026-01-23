@@ -82,7 +82,7 @@ dependencies {
 
 	// Tools, utilities and annotation processor dependencies
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openAPIVersion")
-	implementation("com.github.ben-manes.caffeine:caffeine")
+	implementation("org.ehcache:ehcache:3.10.8")
 
 	// Test dependencies
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
