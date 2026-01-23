@@ -2,14 +2,14 @@ package com.book.management.application.service.components;
 
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.application.model.BookModel;
-import com.book.management.infrastructure.constants.UserConstants;
+import com.book.management.infrastructure.constants.BookConstants;
 import com.book.management.infrastructure.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 import java.util.List;
 
 @Component
@@ -28,7 +28,7 @@ public class CacheRefreshScheduler {
             BookMapper mapper
     ) {
         this.booksCache = cacheManager.getCache(
-                UserConstants.BOOK_LIST_CACHE,
+                BookConstants.BOOK_LIST_CACHE,
                 String.class,
                 (Class<List<BookModel>>) (Class<?>) List.class
         );
@@ -40,9 +40,7 @@ public class CacheRefreshScheduler {
     public void refreshBookCache() {
         log.info("Refreshing book cache...");
 
-        synchronized (LOCK) {
-            List<BookModel> bookModels = List.copyOf(mapper.entitiesToModels(repository.findAll()));
-            booksCache.put(UserConstants.BOOK_LIST_CACHE, bookModels);
-        }
+        List<BookModel> bookModels = List.copyOf(mapper.entitiesToModels(repository.findAll()));
+        booksCache.put(BookConstants.BOOK_LIST_CACHE, bookModels);
     }
 }

@@ -3,14 +3,12 @@ package com.book.management.application.service.book;
 import com.book.management.application.exception.ItemNotFoundException;
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.application.model.BookModel;
-import com.book.management.application.service.components.CacheRefreshScheduler;
 import com.book.management.domain.book.BookEntity;
-import com.book.management.infrastructure.constants.UserConstants;
+import com.book.management.infrastructure.constants.BookConstants;
 import com.book.management.infrastructure.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,21 +19,12 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;
     private final BookMapper mapper;
-    private final Cache<String, List<BookModel>> booksCache;;
-    private final CacheManager cacheManager;
 
     public BookServiceImpl(
             BookRepository repository,
-            BookMapper bookMapper,
-            CacheManager cacheManager) {
+            BookMapper bookMapper) {
         this.repository = repository;
         this.mapper = bookMapper;
-        this.cacheManager = cacheManager;
-        this.booksCache = cacheManager.getCache(
-                UserConstants.BOOK_LIST_CACHE,
-                String.class,
-                (Class<List<BookModel>>) (Class<?>) List.class
-        );
     }
 
     @Override
@@ -79,27 +68,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Cacheable(value = BookConstants.BOOK_LIST_CACHE, key = "'BooksListCache'")
     public List<BookModel> getAllBooks() {
-        synchronized (CacheRefreshScheduler.LOCK) {
-            List<BookModel> cachedBooks = booksCache.get(UserConstants.BOOK_LIST_CACHE);
-            if (cachedBooks != null) {
-                return cachedBooks;
-            }
-        }
-
-        List<BookModel> bookModels;
-
-        synchronized (CacheRefreshScheduler.LOCK) {
-            List<BookModel> cachedBooks = booksCache.get(UserConstants.BOOK_LIST_CACHE);
-            if (cachedBooks != null) {
-                return cachedBooks;
-            }
-
-            bookModels = List.copyOf(mapper.entitiesToModels(repository.findAll()));
-            booksCache.put(UserConstants.BOOK_LIST_CACHE, bookModels);
-        }
-
-        return bookModels;
+        log.info("Get All Books - called");
+        return List.copyOf(mapper.entitiesToModels(repository.findAll()));
     }
 
     @Override
