@@ -20,6 +20,8 @@ public class CacheRefreshScheduler {
     private final BookRepository repository;
     private final BookMapper mapper;
 
+    public static final Object LOCK = new Object();
+
     public CacheRefreshScheduler(
             CacheManager cacheManager,
             BookRepository repository,
@@ -37,7 +39,10 @@ public class CacheRefreshScheduler {
     @Scheduled(fixedDelayString = "${management.cache.refresh-rate-ms}") // every 5 minutes
     public void refreshBookCache() {
         log.info("Refreshing book cache...");
-        List<BookModel> bookModels = List.copyOf(mapper.entitiesToModels(repository.findAll()));
-        booksCache.put(UserConstants.BOOK_LIST_CACHE, bookModels);
+
+        synchronized (LOCK) {
+            List<BookModel> bookModels = List.copyOf(mapper.entitiesToModels(repository.findAll()));
+            booksCache.put(UserConstants.BOOK_LIST_CACHE, bookModels);
+        }
     }
 }

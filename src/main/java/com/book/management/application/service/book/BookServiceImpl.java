@@ -3,6 +3,7 @@ package com.book.management.application.service.book;
 import com.book.management.application.exception.ItemNotFoundException;
 import com.book.management.application.mapper.BookMapper;
 import com.book.management.application.model.BookModel;
+import com.book.management.application.service.components.CacheRefreshScheduler;
 import com.book.management.domain.book.BookEntity;
 import com.book.management.infrastructure.constants.UserConstants;
 import com.book.management.infrastructure.repository.BookRepository;
@@ -79,11 +80,26 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookModel> getAllBooks() {
-        List<BookModel> cachedBooks = booksCache.get(UserConstants.BOOK_LIST_CACHE);
-        if (cachedBooks != null) {
-            return cachedBooks;
+        synchronized (CacheRefreshScheduler.LOCK) {
+            List<BookModel> cachedBooks = booksCache.get(UserConstants.BOOK_LIST_CACHE);
+            if (cachedBooks != null) {
+                return cachedBooks;
+            }
         }
-        return mapper.entitiesToModels(repository.findAll());
+
+        List<BookModel> bookModels;
+
+        synchronized (CacheRefreshScheduler.LOCK) {
+            List<BookModel> cachedBooks = booksCache.get(UserConstants.BOOK_LIST_CACHE);
+            if (cachedBooks != null) {
+                return cachedBooks;
+            }
+
+            bookModels = List.copyOf(mapper.entitiesToModels(repository.findAll()));
+            booksCache.put(UserConstants.BOOK_LIST_CACHE, bookModels);
+        }
+
+        return bookModels;
     }
 
     @Override
